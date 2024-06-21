@@ -1,0 +1,131 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>IMS</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net46</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>6</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <RootNamespace />
+    <StartupObject></StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CryptoLibrary">
+      <HintPath>..\InovexMRP\CryptoLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms">
+      <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="SecureDongle_Control">
+      <HintPath>..\InovexMRP\SecureDongle_Control.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Barcode">
+      <HintPath>..\InovexMRP\Spire.Barcode.dll</HintPath>
+    </Reference>
+    <Reference Include="CSLibrary">
+      <HintPath>..\InovexMRP\CSLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IMS.My\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="IMS.frmLM1XCS.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.frmLM1XCS.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS.frmMA1CTL.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.frmMA1CTL.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS.frmMAECDT.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.frmMAECDT.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS.frmMAEPAL.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.frmMAEPAL.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS.Login.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.Login.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS.MDIParent.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.MDIParent.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS.Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IMS.Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IMS\frmPCRORD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="IMS.frmLM1XCS.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.frmLM1XCS.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IMS.frmMA1CTL.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.frmMA1CTL.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IMS.frmMAECDT.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.frmMAECDT.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IMS.frmMAEPAL.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.frmMAEPAL.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IMS.Login.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.Login.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IMS.MDIParent.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.MDIParent.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IMS.Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IMS.Resources.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{c0c07587-41a7-46c8-8fbd-3f9c8ebe2ddc}" />
+  </ItemGroup>
+  <PropertyGroup>
+<StartupObject>IMS.MyApplication</StartupObject>
+<ReferencePath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\</ReferencePath>
+<AssemblyVersion>1.2.2</AssemblyVersion>
+<FileVersion>1.2.2</FileVersion>
+  </PropertyGroup>
+</Project>

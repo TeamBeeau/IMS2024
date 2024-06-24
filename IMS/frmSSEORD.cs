@@ -2090,7 +2090,7 @@ namespace IMS
 			this.dgvHEADER.BackgroundColor = System.Drawing.Color.Lavender;
 			this.dgvHEADER.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvHEADER.Location = new System.Drawing.Point(4, 190);
-			this.dgvHEADER.MultiSelect = false;
+			this.dgvHEADER.MultiSelect = true;
 			this.dgvHEADER.Name = "dgvHEADER";
 			this.dgvHEADER.ReadOnly = true;
 			this.dgvHEADER.RowHeadersVisible = false;
@@ -3105,22 +3105,25 @@ namespace IMS
 		{
 			Header();
 		}
-
+		
 		private void btnDELETEFR_Click(object sender, EventArgs e)
 		{
 			if (dgvHEADER.RowCount != 0)
 			{
-				string strDOCNO = dgvHEADER.CurrentRow.Cells["SLORD_DOCNO"].Value.ToString();
-				string strMSG = Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Are you sure want to delete this record?") + "\r\n";
-				strMSG += Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Document No");
-				strMSG = strMSG + " : " + strDOCNO;
-				if (MessageBox.Show(strMSG, "Inovex Business Suites", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.No)
-				{
-					string strSQL = "DELETE SLORD_TBL WHERE SLORD_DOCNO = '" + strDOCNO + "' ";
-					DB.DBExecute(strSQL);
-					MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Record deleted!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-					Header();
-				}
+                string strMSG = Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Are you sure want to delete this record?") + "\r\n";
+                strMSG += Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Document No");
+
+                if (MessageBox.Show(strMSG, "Inovex Business Suites", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.No)
+                {
+					foreach (DataGridViewRow row in dgvHEADER.SelectedRows)
+					{
+						string strDOCNO = row.Cells["SLORD_DOCNO"].Value.ToString();
+						string strSQL = "DELETE SLORD_TBL WHERE SLORD_DOCNO = '" + strDOCNO + "' ";
+						DB.DBExecute(strSQL);
+					}
+                    MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Record deleted!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    Header();
+                }
 			}
 		}
 

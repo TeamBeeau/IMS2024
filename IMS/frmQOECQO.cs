@@ -1730,7 +1730,7 @@ namespace IMS
 			this.TableLayoutPanel2.ResumeLayout(false);
 			this.TableLayoutPanel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)this.dgvHEADER).EndInit();
-			this.TableLayoutPanel6.ResumeLayout(false);
+			this.TableLayoutPanel6.ResumeLayout(false); ; ; ; ;
 			this.Panel1.ResumeLayout(false);
 			this.Panel1.PerformLayout();
 			this.TableLayoutPanel3.ResumeLayout(false);
@@ -2200,17 +2200,29 @@ namespace IMS
             {
                 list = dt.Rows.OfType<DataRow>().Select(dr => (string)dr["QOCQO_QUONO"]).ToList();
            listField = list.Where(a=>a.Contains( nameQO)).ToList();
-				if(listField.Count==0)
+				listField = listField.Distinct().ToList();
+				int numMax = 0;
+
+                if (listField.Count > 0)
+				{
+					 numMax = Convert.ToInt32(listField[0].Split('-')[1]);
+					foreach (var item in listField)
+					{
+						if (Convert.ToInt32(item.Split('-')[1]) > numMax)
+							numMax = Convert.ToInt32(item.Split('-')[1]);
+					}
+				}
+
+                if (listField.Count==0)
 				{
 					nameQO += "-001";
 				}	
 				else
 				{
-					int numQO =Convert.ToInt32( listField[0].Split('-')[1])+1;
+					int numQO =numMax + 1;
 					String sQO=numQO+"";
 					if (sQO.Length < 2) sQO = "00" + sQO;
                     else if(sQO.Length < 3) sQO = "0" + sQO;
-
                     nameQO +="-" +sQO;
                 }	
             }
@@ -2227,7 +2239,7 @@ namespace IMS
 			btnCancel.Enabled = false;
 			btnDelete.Enabled = false;
 			btnADD.Enabled = false;
-			dgvDETAILS.Enabled = false;
+			//dgvDETAILS.Enabled = false;
 		
             ClearDetails(true);
 			btnPrint.Enabled = false;
@@ -2326,7 +2338,7 @@ namespace IMS
 		}
 
 		private void btnSAVE_Click(object sender, EventArgs e)
-		{
+		 {
 			if(IsNew)
 			{
                if( txtQUONO.Text == sQuoNo)
@@ -2335,7 +2347,7 @@ namespace IMS
 					return;
 				}	
             }	
-            btnSAVE.Enabled = false;
+           // btnSAVE.Enabled = false;
             IsNotsave = false;
             OleDbCommand cmd = new OleDbCommand();
 			string strNextNo = "";
@@ -2374,7 +2386,7 @@ namespace IMS
 			{
 				cmd.Connection = DB.GetDBConnection();
 				cmd.CommandText = strSQL;
-				string intAffected = Conversions.ToString(cmd.ExecuteNonQuery());
+				cmd.ExecuteNonQuery();
 			}
 			catch (Exception ex2)
 			{

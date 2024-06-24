@@ -671,15 +671,23 @@ namespace IMS
                     {
                         OtherCost = Conversions.ToDouble(row.Cells["OtherCost"].Value);
                     }
-                if(IsNew)
-                {
-                    G.listColorCost.Add( new ColorCost(row.Cells["MAITM_CATCD"].Value.ToString(), Variable, FixedCost, Transportation, OtherCost));
+                if (row.Cells["MAITM_CATCD"].Value == null) continue;
+                int index = G.listColorCost.FindIndex(a => a.Color == row.Cells["MAITM_CATCD"].Value.ToString());
 
+                if (IsNew|| index==-1)
+                {
+
+                 
+                    G.listColorCost.Add( new ColorCost(row.Cells["MAITM_CATCD"].Value.ToString(), Variable, FixedCost, Transportation, OtherCost));
+                    String strSQL = "INSERT INTO CostSetup (Category, VariableCost,FixedCost, Transportation,OtherCost) ";
+                    strSQL = strSQL + "VALUES ('" + row.Cells["MAITM_CATCD"].Value.ToString() + "', '" + Variable + "', '" + FixedCost + "', '" + Transportation + "', '" + OtherCost + "')";
+                    DB.ExecProc(strSQL);
                 }
                 else
                 {
-                    if (row.Cells["MAITM_CATCD"].Value == null) continue;
-                    int index = G.listColorCost.FindIndex(a => a.Color == row.Cells["MAITM_CATCD"].Value.ToString());
+                   
+                     DB.RecordExists("UPDATE CostSetup SET VariableCost = '" + Variable + "' , FixedCost = '" + FixedCost + "' , Transportation = '" + Transportation + "'  , OtherCost = '" + OtherCost + "'  WHERE Category='" + row.Cells["MAITM_CATCD"].Value + "' ");
+                   
                     G.listColorCost[index] = new ColorCost(row.Cells["MAITM_CATCD"].Value.ToString(), Variable, FixedCost, Transportation, OtherCost);
 
                 }
@@ -692,10 +700,10 @@ namespace IMS
             Cal();
             if (File.Exists("PackingCost.conf"))
                 File.Delete("PackingCost.conf");
-            if (File.Exists("ColorCost.conf"))
-                File.Delete("ColorCost.conf");
-            Access.SaveColorCost(G.listColorCost);
-            Access.SavePackingCost(G.listPackingCost);
+            //if (File.Exists("ColorCost.conf"))
+            //    File.Delete("ColorCost.conf");
+           // Access.SaveColorCost(G.listColorCost);
+           // Access.SavePackingCost(G.listPackingCost);
             dataGridView.Refresh();
             MessageBox.Show("Update Quotation Cost Complete!");
         }
@@ -707,12 +715,17 @@ namespace IMS
 
         private void Quotation2_Load_1(object sender, EventArgs e)
         {
-            if (File.Exists("PackingCost.conf"))
-                G.listPackingCost = Access.LoadPackingCost();
-            if (File.Exists("ColorCost.conf"))
-                G.listColorCost = Access.LoadColorCost();
+          //  if (File.Exists("PackingCost.conf"))
+              //  G.listPackingCost = Access.LoadPackingCost();
+            //if (File.Exists("ColorCost.conf"))
+            G.listColorCost = new List<ColorCost>();
+          DataTable dt=  DB.GetTable("*","CostSetup","","");
+            foreach(DataRow dr in dt.Rows)
+            {
+                G.listColorCost.Add(new ColorCost(dr["Category"].ToString(), Convert.ToDouble(dr["VariableCost"]), Convert.ToDouble(dr["FixedCost"]), Convert.ToDouble(dr["Transportation"]), Convert.ToDouble(dr["OtherCost"])));
+            }
             GetData();
-            LoadData();
+            //LoadData();
             LoadDataColor();
             Cal();
             cbHGRPCD.SelectedIndex = -1;

@@ -25,62 +25,62 @@ namespace IMS
     public class Access
     {
     
-        public static void SavePackingCost(List<PackingCost> list)
-        {
+        //public static void SavePackingCost(List<PackingCost> list)
+        //{
 
-            using (MemoryStream ms = new MemoryStream())
-            {
+        //    using (MemoryStream ms = new MemoryStream())
+        //    {
 
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(ms, list);
-                ms.Position = 0;
-                byte[] buffer = new byte[(int)ms.Length];
-                ms.Read(buffer, 0, buffer.Length);
-                File.WriteAllText("PackingCost.conf", Convert.ToBase64String(buffer));
-                File.Exists("PackingCost.conf");
-
-
-            }
-        }
-        public static void SaveColorCost( List<ColorCost> list)
-        {
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(ms, list);
-                ms.Position = 0;
-                byte[] buffer = new byte[(int)ms.Length];
-                ms.Read(buffer, 0, buffer.Length);
-                File.WriteAllText("ColorCost.conf", Convert.ToBase64String(buffer));
-                File.Exists("ColorCost.conf");
+        //        BinaryFormatter bf = new BinaryFormatter();
+        //        bf.Serialize(ms, list);
+        //        ms.Position = 0;
+        //        byte[] buffer = new byte[(int)ms.Length];
+        //        ms.Read(buffer, 0, buffer.Length);
+        //        File.WriteAllText("PackingCost.conf", Convert.ToBase64String(buffer));
+        //        File.Exists("PackingCost.conf");
 
 
-            }
-        }
-        public static List<PackingCost> LoadPackingCost()
-        {
+        //    }
+        //}
+        //public static void SaveColorCost( List<ColorCost> list)
+        //{
 
-            List<PackingCost> list ;
-            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(File.ReadAllText("PackingCost.conf"))))
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                list = (List<PackingCost>)bf.Deserialize(ms);
-            }
-            return list;
-        }
-        public static List<ColorCost> LoadColorCost()
-        {
+        //    using (MemoryStream ms = new MemoryStream())
+        //    {
 
-            List<ColorCost> list;
-            using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(File.ReadAllText("ColorCost.conf"))))
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                list = (List<ColorCost>)bf.Deserialize(ms);
-            }
-            return list;
-        }
+        //        BinaryFormatter bf = new BinaryFormatter();
+        //        bf.Serialize(ms, list);
+        //        ms.Position = 0;
+        //        byte[] buffer = new byte[(int)ms.Length];
+        //        ms.Read(buffer, 0, buffer.Length);
+        //        File.WriteAllText("ColorCost.conf", Convert.ToBase64String(buffer));
+        //        File.Exists("ColorCost.conf");
+
+
+        //    }
+        //}
+        //public static List<PackingCost> LoadPackingCost()
+        //{
+
+        //    List<PackingCost> list ;
+        //    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(File.ReadAllText("PackingCost.conf"))))
+        //    {
+        //        BinaryFormatter bf = new BinaryFormatter();
+        //        list = (List<PackingCost>)bf.Deserialize(ms);
+        //    }
+        //    return list;
+        //}
+        //public static List<ColorCost> LoadColorCost()
+        //{
+
+        //    List<ColorCost> list;
+        //    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(File.ReadAllText("ColorCost.conf"))))
+        //    {
+        //        BinaryFormatter bf = new BinaryFormatter();
+        //        list = (List<ColorCost>)bf.Deserialize(ms);
+        //    }
+        //    return list;
+        //}
     }
    
 }

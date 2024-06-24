@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using CryptoLibrary;
 using IMS.My.Resources;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
 namespace IMS
@@ -541,17 +543,43 @@ namespace IMS
 					{
 						return false;
 					}
-                        if (File.Exists("PackingCost.conf"))
-                            G.listPackingCost = Access.LoadPackingCost();
-                        if (File.Exists("ColorCost.conf"))
-                            G.listColorCost = Access.LoadColorCost();
-					#if !DEBUG
+						if (G.quotation2 == null) G.quotation2 = new Quotation2();
+                            if (G.quotation2 != null)
+						{
+                            string strSQL2 = "EXEC spMAITM '0', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("0") + "', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("") + "', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("PACKING") + "', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("") + "', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("") + "', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("") + "', ";
+                            strSQL2 = strSQL2 + "'" + Common.gfValidSQLStr("") + "', ";
+                            strSQL2 = Conversions.ToString(Operators.ConcatenateObject(strSQL2,"'zzzzz' "));
+                            G.dtPacking = DB.ExecProc(strSQL2);
+
+                            DataColumn cols = new DataColumn();
+                            cols.DefaultValue = "0";
+                            cols.ColumnName = "PackingCost";
+                            G.dtPacking.Columns.AddRange(new DataColumn[] { cols });
+                          
+                            G.quotation2.RefreshCal();
+						}
+                       // if (File.Exists("PackingCost.conf"))
+                       //  G.listPackingCost = Access.LoadPackingCost();
+                        G.listColorCost = new List<ColorCost>();
+                        DataTable dt = DB.GetTable("*", "CostSetup", "", "");
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            G.listColorCost.Add(new ColorCost(dr["Category"].ToString(), Convert.ToDouble(dr["VariableCost"]), Convert.ToDouble(dr["FixedCost"]), Convert.ToDouble(dr["Transportation"]), Convert.ToDouble(dr["OtherCost"])));
+                        }
+                       
+#if !DEBUG
 						if (!Dongle.CheckForDongle())
 							{
 												return false;
 						}
-					#endif
-						return true;
+#endif
+                        return true;
 				}
 			}
 			finally

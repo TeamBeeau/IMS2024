@@ -635,8 +635,15 @@ namespace IMS
         }
         public void Cal()
         {
-            
-            G.listColorCost = new List<ColorCost>();
+            bool IsNew = false;
+            if (G.listColorCost.Count == 0)
+            {
+                IsNew = true;
+                G.listColorCost = new List<ColorCost>();
+            }
+            else IsNew = false;
+
+
             foreach (DataGridViewRow row in dataGridViewColor.Rows)
             {
 
@@ -664,8 +671,18 @@ namespace IMS
                     {
                         OtherCost = Conversions.ToDouble(row.Cells["OtherCost"].Value);
                     }
-                if (row.Cells["MAITM_CATCD"].Value == null) continue;
-                G.listColorCost.Add(new ColorCost(row.Cells["MAITM_CATCD"].Value.ToString(), Variable,FixedCost,Transportation, OtherCost));
+                if(IsNew)
+                {
+                    G.listColorCost.Add( new ColorCost(row.Cells["MAITM_CATCD"].Value.ToString(), Variable, FixedCost, Transportation, OtherCost));
+
+                }
+                else
+                {
+                    if (row.Cells["MAITM_CATCD"].Value == null) continue;
+                    int index = G.listColorCost.FindIndex(a => a.Color == row.Cells["MAITM_CATCD"].Value.ToString());
+                    G.listColorCost[index] = new ColorCost(row.Cells["MAITM_CATCD"].Value.ToString(), Variable, FixedCost, Transportation, OtherCost);
+
+                }
             }
 
         }
@@ -695,9 +712,9 @@ namespace IMS
             if (File.Exists("ColorCost.conf"))
                 G.listColorCost = Access.LoadColorCost();
             GetData();
-          //  LoadData();
+            LoadData();
             LoadDataColor();
-
+            Cal();
             cbHGRPCD.SelectedIndex = -1;
             BindComboBox("HGRPCD");
         }

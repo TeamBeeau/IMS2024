@@ -2728,7 +2728,7 @@ namespace IMS
 				{
 					double uprice = Convert.ToDouble(dt.Rows[0]["SLORD_UPRICE"]);
 					numUPRICE.Value = (uprice * 70)/100.0;
-					
+
 				}
 			}
         }

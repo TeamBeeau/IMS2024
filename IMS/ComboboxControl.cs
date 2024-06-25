@@ -334,8 +334,7 @@ namespace IMS
 			if (e.KeyCode == Keys.Enter)
 			{
 				LoadData();
-				//TextBox1.Text = TextBox1.Text.Replace("\n", "");
-
+                e.SuppressKeyPress = true;
             }
         }
 

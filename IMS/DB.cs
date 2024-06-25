@@ -377,7 +377,7 @@ namespace IMS
 			{
 				ProjectData.SetProjectError(ex3);
 				OleDbException ex2 = ex3;
-				MessageBox.Show(Conversions.ToString(ex2.ErrorCode) + "-" + ex2.Message + "\r\nUnable to create table object! Please contact system administrator.", "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+				//MessageBox.Show(Conversions.ToString(ex2.ErrorCode) + "-" + ex2.Message + "\r\nUnable to create table object! Please contact system administrator.", "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 				ExecProc = null;
 				ProjectData.ClearProjectError();
 			}
@@ -385,7 +385,7 @@ namespace IMS
 			{
 				ProjectData.SetProjectError(ex4);
 				Exception ex = ex4;
-				MessageBox.Show(ex.Message, "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+				//MessageBox.Show(ex.Message, "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 				ExecProc = null;
 				ProjectData.ClearProjectError();
 			}

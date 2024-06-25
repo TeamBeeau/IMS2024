@@ -9,7 +9,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using IMS.My.Resources;
-
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using DataTable = System.Data.DataTable;
@@ -1744,11 +1743,13 @@ namespace IMS
 
         private void CbCUSID_SelectedIndexChanged1(object sender, EventArgs e)
         {
+            btnRetrieve.Enabled = true;
             if (txtQUONO.Text.Trim()=="")
             {
 				if(cbCUSID.SelectedValue!=null)
-				{ 	
-				cbHCUSID.SelectedValue = cbCUSID.SelectedValue;
+				{
+                   
+                    cbHCUSID.SelectedValue = cbCUSID.SelectedValue;
 				chkLATEST.Checked = true;
                     string strSQL = "EXEC spQOCQO ";
                     strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("'", cbHCUSID.SelectedValue), "', ")));
@@ -1762,6 +1763,7 @@ namespace IMS
 
                     }
                 }
+
             }
         }
 
@@ -1955,8 +1957,9 @@ namespace IMS
 			CalcTotal();
 			CalcPercentage();
 		}
+		DataTable dtWRK;
 
-		private void RefreshGridDetails()
+        private void RefreshGridDetails()
 		{
 			int i = 0;
 			double dblTotal = 0.0;
@@ -1966,18 +1969,18 @@ namespace IMS
 			strSQL += "QOCQO_VARCOST, QOCQO_TPTCOST, QOCQO_COMM, QOCQO_PRICE, ";
 			strSQL += "QOCQO_TOTAL, QOCQO_PROFIT, QOCQO_RTNRT ";
 			strSQL = strSQL + "FROM QOCQO_WRK WHERE QOCQO_PRNID = '" + MyProject.Computer.Name + "' ";
-			DataTable dt = DB.ExecProc(strSQL);
+            dtWRK = DB.ExecProc(strSQL);
 			checked
 			{
-				if (dt.Rows.Count == 0)
+				if (dtWRK.Rows.Count == 0)
 				{
 					MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "No data found!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 				}
-				else if (dt.Rows.Count > 0)
+				else if (dtWRK.Rows.Count > 0)
 				{
 					dgvDETAILS.ClearSelection();
 					DataGridView dataGridView = dgvDETAILS;
-					dataGridView.DataSource = dt;
+					dataGridView.DataSource = dtWRK;
 					dataGridView.Columns[i].Visible = true;
 					dataGridView.Columns[i].Width = 30;
 					dataGridView.Columns[i].HeaderText = "";
@@ -2187,50 +2190,64 @@ namespace IMS
 			numPERCENT.Value = 0.0;
 		}
 		String nameQO = "";
+		String nameQOOld = "";
+		public void GetID()
+		{
+            DateTime dtNow = DateTime.Now;
+            nameQO = "QO" + dtNow.ToString("yyMM");
+			nameQOOld = nameQO;
+            DataTable dt = DB.GetTable("QOCQO_QUONO", "QOCQO_TBL", "", "QOCQO_QUODT");//[]QOCQO_WRK
+            List<string> list = new List<string>();
+            List<string> listField = new List<string>();
+            if (dt.Rows.Count > 0)
+            {
+                list = dt.Rows.OfType<DataRow>().Select(dr => (string)dr["QOCQO_QUONO"]).ToList();
+                listField = list.Where(a => a.Contains(nameQO)).ToList();
+                listField = listField.Distinct().ToList();
+                int numMax = 0;
 
+                if (listField.Count > 0)
+                {
+                    numMax = Convert.ToInt32(listField[0].Split('-')[1]);
+                    foreach (var item in listField)
+                    {
+                        if (Convert.ToInt32(item.Split('-')[1]) > numMax)
+                            numMax = Convert.ToInt32(item.Split('-')[1]);
+                    }
+                }
+
+                if (listField.Count == 0)
+                {
+					nameQOOld += "-001";
+                    nameQO += "-001";
+                }
+                else
+                {
+                    int numQO = numMax + 1;
+                    String sQO = numQO + "";
+                    if (sQO.Length < 2) sQO = "00" + sQO;
+                    else if (sQO.Length < 3) sQO = "0" + sQO;
+                    nameQO += "-" + sQO;
+                    int numQO2 = numMax ;
+                    String sQO2 = numQO2 + "";
+                    if (sQO2.Length < 2) sQO2 = "00" + sQO2;
+                    else if (sQO2.Length < 3) sQO2 = "0" + sQO2;
+                    nameQOOld += "-" + sQO2;
+                }
+            }
+            else
+            {
+                nameQOOld+= "-001";
+                nameQO += "-001";
+            }
+			txtQUONO.Text = nameQO;
+        }
         private void btnNew_Click(object sender, EventArgs e)
         {
 			IsNew = true;
-			DateTime dtNow = DateTime.Now;
-			 nameQO = "QO" + dtNow.ToString("yyMM");
-		DataTable dt=	DB.GetTable("QOCQO_QUONO", "QOCQO_TBL", "", "QOCQO_QUODT");//[]QOCQO_WRK
-            List<string> list = new List<string>();
-            List<string> listField=new List<string>();
-            if (dt.Rows.Count > 0 )
-            {
-                list = dt.Rows.OfType<DataRow>().Select(dr => (string)dr["QOCQO_QUONO"]).ToList();
-           listField = list.Where(a=>a.Contains( nameQO)).ToList();
-				listField = listField.Distinct().ToList();
-				int numMax = 0;
+			GetID();
 
-                if (listField.Count > 0)
-				{
-					 numMax = Convert.ToInt32(listField[0].Split('-')[1]);
-					foreach (var item in listField)
-					{
-						if (Convert.ToInt32(item.Split('-')[1]) > numMax)
-							numMax = Convert.ToInt32(item.Split('-')[1]);
-					}
-				}
-
-                if (listField.Count==0)
-				{
-					nameQO += "-001";
-				}	
-				else
-				{
-					int numQO =numMax + 1;
-					String sQO=numQO+"";
-					if (sQO.Length < 2) sQO = "00" + sQO;
-                    else if(sQO.Length < 3) sQO = "0" + sQO;
-                    nameQO +="-" +sQO;
-                }	
-            }
-			else
-			{
-                nameQO += "-001";
-            }
-			txtQUONO.Enabled = false;
+            txtQUONO.Enabled = false;
 
            // 
             this.btnSAVE.Text = "New";
@@ -2318,10 +2335,28 @@ namespace IMS
             if (IsNew)
 			{
                 btnSAVE.Enabled = true;
+				btnRetrieve.Enabled = false;
             }
-			
+            GetID();
+
             GenerateWorkFile();
 			RefreshGridDetails();
+			//foreach(DataRow row in dtWRK.Rows)
+			//{
+			//	String Model=row["QOCQO_CPTNO"].ToString();
+			//	int imdex = G.listPackingCost.FindIndex(a => a.codePacking == Model);
+			//	double Commission=0, FixedCost=0, Transportation=0, OtherCost=0;
+
+   //                 if (imdex>-1)
+			//	{
+   //                 String sql = "UPDATE QOCQO_WRK SET QOCQO_COMM = '" + Commission + "' WHERE QOCQO_PRNID='" + MyProject.Computer.Name + "' AND QOCQO_CPTNO='" + row["QOCQO_CPTNO"].ToString() + "'";
+
+   //                 DB.RecordExists(sql);
+   //             }	
+				
+   //         }	
+			
+
             if (IsNew)
             {
                 txtQUONO.Text = nameQO;
@@ -2331,7 +2366,7 @@ namespace IMS
 		private void GenerateWorkFile()
 		{
 			string strSQL = "EXEC spQOECQO_WRK '" + MyProject.Computer.Name + "', ";
-			strSQL = strSQL + "'" + Common.gfValidSQLStr(txtQUONO.Text) + "', ";
+			strSQL = strSQL + "'" + Common.gfValidSQLStr(nameQOOld) + "', ";
 			strSQL = strSQL + "'" + Common.gfSQLDate(dtpQUODT.Value) + "', ";
 			strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbCUSID.SelectedValue)) + "' ";
 			DB.ExecProc(strSQL);

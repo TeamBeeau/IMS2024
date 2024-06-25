@@ -814,7 +814,7 @@ namespace IMS
 			set;
 		}
 
-		internal virtual ComboboxControl cbITMCD
+		internal virtual ComboboxControl cbITMCD //db2
 		{
 			[CompilerGenerated]
 			get
@@ -1615,7 +1615,7 @@ namespace IMS
 			this.Label14.Name = "Label14";
 			this.Label14.Size = new System.Drawing.Size(65, 16);
 			this.Label14.TabIndex = 9;
-			this.Label14.Text = "Unit Price";
+			this.Label14.Text = "70% of Unit Price";
 			this.numUPRICE.AllowNegative = false;
 			this.numUPRICE.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.numUPRICE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -1629,6 +1629,7 @@ namespace IMS
 			this.numUPRICE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.numUPRICE.ThousandSeperator = false;
 			this.numUPRICE.Value = 0.0;
+			this.numUPRICE.Enabled = false;
 			this.lblSTDWGT.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.lblSTDWGT.AutoSize = true;
 			this.lblSTDWGT.ForeColor = System.Drawing.SystemColors.HotTrack;
@@ -2574,6 +2575,7 @@ namespace IMS
 
 		private void numUPRICE_TextChanged(object sender, EventArgs e)
 		{
+
 			Calculate();
 		}
 
@@ -2708,17 +2710,28 @@ namespace IMS
 		}
 
 		private void frmPCERTN_KeyDown(object sender, KeyEventArgs e)
-		{
+			{
 			Common.gfControl_KeyDown(RuntimeHelpers.GetObjectValue(sender), e);
 		}
 
 		private void cbITMCD_SelectedValueChanged(object sender, EventArgs e)
 		{
-			if (cbITMCD.SelectedIndex != -1)
+			if (cbITMCD.SelectedIndex != -1)  //db01
 			{
 				BindBOMRev();
+				string strSQL = "SELECT SLORD_UPRICE ";
+				strSQL += "FROM SLORD_TBL  ";
+				strSQL = strSQL + "WHERE SLORD_CUSID = '" + Common.gfValidSQLStr(Conversions.ToString(cbCUSID.SelectedValue)) + "' ";
+				strSQL = strSQL + "AND SLORD_ITMCD = '" + Common.gfValidSQLStr(Conversions.ToString(cbITMCD.SelectedValue)) + "' ";
+				DataTable dt = DB.ExecProc(strSQL);
+				if (dt.Rows.Count > 0)
+				{
+					double uprice = Convert.ToDouble(dt.Rows[0]["SLORD_UPRICE"]);
+					numUPRICE.Value = (uprice * 70)/100.0;
+					
+				}
 			}
-		}
+        }
 
 		private void BindBOMRev()
 		{
@@ -2732,7 +2745,7 @@ namespace IMS
 			Common.RetriveComboItembySQL(strSQL, cbREVNO);
 		}
 
-		private void cbCUSID_SelectedIndexChanged(object sender, EventArgs e)
+		private void cbCUSID_SelectedIndexChanged(object sender, EventArgs e) //db3
 		{
 			txtCURCD.Text = Conversions.ToString(DB.GetColumnValue("MACUS_CURCD", "MACUS_TBL", Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("MACUS_CUSID = '", cbCUSID.SelectedValue), "'"))));
 			string strWHERE = "MACPT_CUSID = '" + Common.gfValidSQLStr(Conversions.ToString(cbCUSID.SelectedValue)) + "' AND MAITM_ITMTY = '1' ";

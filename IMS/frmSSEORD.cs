@@ -2493,6 +2493,8 @@ namespace IMS
 			cbITMCD.Enabled = true;
 			cbITMCD.TextBox1.Text = string.Empty;
 			cbREVNO.Enabled = true;
+
+
 			numQTY.Value = 0.0;
 			numUPRICE.Value = 0.0;
 			numAMT.Value = 0.0;

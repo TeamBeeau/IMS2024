@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
@@ -2544,7 +2545,9 @@ if(dt.Rows.Count > 0)
         }
 		private void btnNew_Click(object sender, EventArgs e)
 		{
-			NewWO();
+			IsNew = true;
+
+            NewWO();
 
         }
 
@@ -2697,7 +2700,7 @@ if(dt.Rows.Count > 0)
 			}
 			MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Record deleted!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 		}
-
+		public bool IsNew = false;
 		private void RefreshSalesOrder()
 		{
 			int i = 0;
@@ -2711,7 +2714,21 @@ if(dt.Rows.Count > 0)
 			{
 				if (dt != null)
 				{
-					dgvSLORD.ClearSelection();
+					if (IsNew)
+					{
+						for (int k = 0; k <= dt.Rows.Count - 1; k++)
+						{
+							DataRow dr = dt.Rows[k];
+							if (Convert.ToDouble(dr["PDWKO_BALQT"]) == 0)
+								dr.Delete();
+
+						}
+
+						dt.AcceptChanges();
+						IsNew = false;
+
+                    }
+                    dgvSLORD.ClearSelection();
 					DataGridView dataGridView = dgvSLORD;
 					dataGridView.DataSource = dt;
 					dataGridView.Columns[i].Visible = true;

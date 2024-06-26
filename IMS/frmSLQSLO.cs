@@ -734,9 +734,12 @@ namespace IMS
             frm.EnableButton();
             frm.Panel1.Visible = true;
             frm.Panel2.Visible = false;
-			tmShow.Enabled = false;
+		
+
+            tmShow.Enabled = false;
 			tmShow.Tick-= TmShow_Tick;
-             frm.cbMDLCD.SelectedValue = dgvSO.CurrentRow.Cells["SLORD_ITMCD"].Value;
+            frm.IsNew = true;
+            frm.cbMDLCD.SelectedValue = dgvSO.CurrentRow.Cells["SLORD_ITMCD"].Value;
               frm.cbEXSPCK.SelectedValue = dgvSO.CurrentRow.Cells["SLORD_PACKING"].Value;
 
         }

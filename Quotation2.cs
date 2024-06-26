@@ -756,26 +756,24 @@ namespace IMS
             dataGridView.Columns.Clear();// = new DataGridView();
             dataGridView.DataSource = null;
             string strSQL = "QOCQO_MDLCD, QOCQO_CPTNO, QOCQO_COMM,QOCQO_CUSID";
+            G.dtCommssion = DB.GetTable(strSQL, "QOCQO_TBL", "QOCQO_CUSID = '" + Conversions.ToString(cbHCUSID.SelectedValue) + "'", " QOCQO_MDLCD ", "ASC");
 
-            G.dtCommssion = DB.GetTable(strSQL, "QOCQO_WRK", "QOCQO_CUSID = '" + Conversions.ToString(cbHCUSID.SelectedValue) + "'",""); 
-            checked
-            {
-                if (G.dtCommssion.Rows.Count == 0)
+          //  G.dtCommssion = DB.GetTable(strSQL, "QOCQO_WRK", "QOCQO_CUSID = '" + Conversions.ToString(cbHCUSID.SelectedValue) + "'",""); 
+                if (G.dtCommssion.Rows.Count > 0)
                 {
-                    G.dtCommssion = DB.GetTable(strSQL, "QOCQO_TBL", "QOCQO_CUSID = '" + Conversions.ToString(cbHCUSID.SelectedValue) + "'", "");
-                    if (G.dtCommssion.Rows.Count == 0)
-                    {
-
-                        MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "No data found!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    }
+                DataRow rowZero = G.dtCommssion.Rows[0];
+                for (int k = 1; k<= G.dtCommssion.Rows.Count - 1; k++)
+                {
+                    DataRow dr = G.dtCommssion.Rows[k];
+                    if (rowZero["QOCQO_MDLCD"].ToString().Trim() == dr["QOCQO_MDLCD"].ToString().Trim())
+                        dr.Delete();
                     else
-                        goto X;
-                 }
-            X:     if (G.dtCommssion.Rows.Count > 0)
-                {
+                        rowZero = dr;
+                }
+              
+                G.dtCommssion.AcceptChanges();
 
-
-                    dataGridView.DataSource = G.dtCommssion;
+                dataGridView.DataSource = G.dtCommssion;
                 
                     dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightSeaGreen;
                     dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
@@ -832,7 +830,7 @@ namespace IMS
                     dataGridView.Refresh();
                   
                 }
-            }
+            
         }
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -854,7 +852,7 @@ namespace IMS
                     double d = Conversions.ToDouble(row.Cells["QOCQO_COMM"].Value.ToString().Replace(",",""));
                     if(d!=0)
                     {
-                        DB.RecordExists("UPDATE QOCQO_WRK SET QOCQO_COMM = '" + d+ "'   WHERE QOCQO_CUSID='"+ row.Cells["QOCQO_CUSID"].Value + "' AND  QOCQO_CPTNO  = '"+ row.Cells["QOCQO_CPTNO"].Value + "' ");
+                       // DB.RecordExists("UPDATE QOCQO_WRK SET QOCQO_COMM = '" + d+ "'   WHERE QOCQO_CUSID='"+ row.Cells["QOCQO_CUSID"].Value + "' AND  QOCQO_CPTNO  = '"+ row.Cells["QOCQO_CPTNO"].Value + "' ");
                         DB.RecordExists("UPDATE QOCQO_TBL SET QOCQO_COMM = '" + d + "'   WHERE QOCQO_CUSID='" + row.Cells["QOCQO_CUSID"].Value + "' AND  QOCQO_CPTNO  = '" + row.Cells["QOCQO_CPTNO"].Value + "' ");
 
                     }

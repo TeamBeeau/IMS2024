@@ -3224,7 +3224,7 @@ namespace IMS
 				strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("SLORD_COMFG = '", Interaction.IIf(chkCOMPLETED.Checked, 1, 0)), "', ")));
 				strSQL = strSQL + "SLORD_DELDT = '" + Common.gfSQLDate(dtpDELDT.Value) + "', ";
 				strSQL = strSQL + "SLORD_REFNO = '" + Common.gfValidSQLStr(txtREFNO.Text) + "', ";
-				strSQL = strSQL + "SLORD_REMRK = '" + Common.gfValidSQLStr(txtREMRK.Text) + "' ";
+				strSQL = strSQL + "SLORD_REMRK = N'" + Common.gfValidSQLStr(txtREMRK.Text) + "' ";
 				strSQL = strSQL + "WHERE SLORD_DOCNO = '" + Common.gfValidSQLStr(txtDOCNO.Text) + "' ";
 				try
 				{

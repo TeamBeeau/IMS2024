@@ -3663,6 +3663,7 @@ namespace IMS
 			this.INQBAL.Size = new System.Drawing.Size(252, 22);
 			this.INQBAL.Text = "Stock Balance Inquiry by Location";
             this.mnuReportingStore.Name = "RPSTORE";
+			mnuReportingStore.Visible = true;
             this.mnuReportingStore.Tag= "RPSTORE";
             this.mnuReportingStore.Size = new System.Drawing.Size(252, 22);
             this.mnuReportingStore.Text = "Reporting Store Location";

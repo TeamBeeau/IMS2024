@@ -2648,7 +2648,35 @@ namespace IMS
 			set;
 		}
 
-		internal virtual ToolStripMenuItem QOEPRC
+
+		ToolStripMenuItem _mnuReportingStore;
+        internal virtual ToolStripMenuItem mnuReportingStore
+		{
+			[CompilerGenerated]
+			get
+			{
+				return _mnuReportingStore;
+			}
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			[CompilerGenerated]
+			set
+			{
+				EventHandler value2 = mnuReportingStore_Click;
+				ToolStripMenuItem mnuReportingStore = _mnuReportingStore;
+				if (mnuReportingStore != null)
+				{
+					mnuReportingStore.Click -= value2;
+				}
+                _mnuReportingStore = value;
+				mnuReportingStore = _mnuReportingStore;
+				if (mnuReportingStore != null)
+				{
+					mnuReportingStore.Click += value2;
+
+				}
+			}
+		}
+        internal virtual ToolStripMenuItem QOEPRC
 		{
 			[CompilerGenerated]
 			get
@@ -3141,7 +3169,9 @@ namespace IMS
 			this.MAQBOM = new System.Windows.Forms.ToolStripMenuItem();
 			this.MAECDT = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuQuotation = new System.Windows.Forms.ToolStripMenuItem();
-			this.QOEPRC = new System.Windows.Forms.ToolStripMenuItem();
+			mnuReportingStore = new ToolStripMenuItem();
+
+            this.QOEPRC = new System.Windows.Forms.ToolStripMenuItem();
 			this.QOECQO = new System.Windows.Forms.ToolStripMenuItem();
 			_Q0ECPACKING = new ToolStripMenuItem();
 
@@ -3584,10 +3614,10 @@ namespace IMS
 			this.PDERDO.Tag = "PDERDO";
 			this.PDERDO.Text = "Customer Return Delivery Order";
 			this.mnuInventory.AutoSize = false;
-			this.mnuInventory.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[21]
+			this.mnuInventory.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[22]
 			{
 				this.PCEGRN, this.PCEPAW, this.PCLGRL, this.ToolStripSeparator14, this.PCELOTDSP, this.PDELOTDSP, this.INEADJ, this.INETRF, this.ToolStripSeparator8, this.INESTG,
-				this.INESTK, this.ToolStripSeparator7, this.INQBAL, this.INQLOT, this.ULRSVD, this.INRLED, this.PDRWIPL, this.PDRFGL, this.ToolStripSeparator9, this.ULXCST,
+				this.INESTK, this.ToolStripSeparator7, this.INQBAL,this.mnuReportingStore, this.INQLOT, this.ULRSVD, this.INRLED, this.PDRWIPL, this.PDRFGL, this.ToolStripSeparator9, this.ULXCST,
 				this.INRSTS
 			});
 			this.mnuInventory.Image = IMS.My.Resources.Resources.mnuInventory;
@@ -3632,7 +3662,12 @@ namespace IMS
 			this.INQBAL.Name = "INQBAL";
 			this.INQBAL.Size = new System.Drawing.Size(252, 22);
 			this.INQBAL.Text = "Stock Balance Inquiry by Location";
-			this.INQLOT.Name = "INQLOT";
+            this.mnuReportingStore.Name = "RPSTORE";
+            this.mnuReportingStore.Tag= "RPSTORE";
+            this.mnuReportingStore.Size = new System.Drawing.Size(252, 22);
+            this.mnuReportingStore.Text = "Reporting Store Location";
+
+            this.INQLOT.Name = "INQLOT";
 			this.INQLOT.Size = new System.Drawing.Size(252, 22);
 			this.INQLOT.Tag = "INQLOT";
 			this.INQLOT.Text = "Lot No Inquiry";
@@ -3984,8 +4019,12 @@ namespace IMS
 			frmINQBAL frm = new frmINQBAL();
 			ShowChildForm(RuntimeHelpers.GetObjectValue(sender), e, frm);
 		}
-
-		private void INQLOT_Click(object sender, EventArgs e)
+        private void mnuReportingStore_Click(object sender, EventArgs e)
+        {
+            Reporting_Store frm = new Reporting_Store();
+            ShowChildForm(RuntimeHelpers.GetObjectValue(sender), e, frm);
+        }
+        private void INQLOT_Click(object sender, EventArgs e)
 		{
 			frmINQLOT frm = new frmINQLOT();
 			ShowChildForm(RuntimeHelpers.GetObjectValue(sender), e, frm);

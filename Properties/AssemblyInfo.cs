@@ -12,5 +12,10 @@ using System.Runtime.Versioning;
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("b5dc3f01-6158-4904-ad93-fa8ece1498f4")]
+<<<<<<< Updated upstream
 [assembly: AssemblyFileVersion("1.2.6.3")]
 [assembly: AssemblyVersion("1.2.6.3")]
+=======
+[assembly: AssemblyFileVersion("1.2.6.4")]
+[assembly: AssemblyVersion("1.2.6.4")]
+>>>>>>> Stashed changes

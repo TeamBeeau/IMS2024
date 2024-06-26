@@ -21,7 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CryptoLibrary">
-      <HintPath>..\Spire.Barcode\CryptoLibrary.dll</HintPath>
+      <HintPath>C:\Lib\CryptoLibrary.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
       <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
@@ -33,14 +33,14 @@
       <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="CSLibrary">
-      <HintPath>..\Spire.Barcode\CSLibrary.dll</HintPath>
+      <HintPath>C:\Lib\CSLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="SecureDongle_Control">
-      <HintPath>..\Spire.Barcode\SecureDongle_Control.dll</HintPath>
+      <HintPath>C:\Lib\SecureDongle_Control.dll</HintPath>
     </Reference>
     <Reference Include="Spire.Barcode">
-      <HintPath>..\Spire.Barcode\Spire.Barcode.dll</HintPath>
+      <HintPath>C:\Lib\Spire.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />

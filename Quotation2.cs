@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -207,7 +208,7 @@ namespace IMS
                 {
                     row["VariableCost"] = G.listColorCost[index].VariableCost;
                     row["FixedCost"] = G.listColorCost[index].FixedCost;
-                    row["Transportation"] = G.listColorCost[index].FixedCost;
+                    row["Transportation"] = G.listColorCost[index].Transportation;
                     row["OtherCost"] = G.listColorCost[index].OtherCost;
                 }
             }
@@ -511,12 +512,16 @@ namespace IMS
                 {
                     try
                     {
+                        
+                        
                         string sVal = txt.Text.Trim().Replace(",", "");
                         valPacking = Convert.ToSingle(sVal);
 
                         txt.Text = valPacking.ToString("#,##"); ;// val.ToString(val % 1 == 0 ? "N0" : "N2");
+                        if (txt.Text =="") txt.Text = "0";
                         txt.SelectionStart = txt.Text.Length;
                         txt.SelectionLength = 0;
+                        
                         dataGridViewColor.CurrentCell.Value = valPacking;
 
                     }
@@ -572,7 +577,9 @@ namespace IMS
                         valCommission = Convert.ToSingle(sVal);
 
                         txt.Text = valCommission.ToString("#,##"); ;// val.ToString(val % 1 == 0 ? "N0" : "N2");
+                        if (txt.Text == "") txt.Text = "0";
                         txt.SelectionStart = txt.Text.Length;
+
                         txt.SelectionLength = 0;
                         dataGridView.CurrentCell.Value = valCommission;
                     }
@@ -642,9 +649,9 @@ namespace IMS
                 G.listColorCost = new List<ColorCost>();
             }
             else IsNew = false;
+           
 
-
-            foreach (DataGridViewRow row in dataGridViewColor.Rows)
+                foreach (DataGridViewRow row in dataGridViewColor.Rows)
             {
 
 
@@ -722,8 +729,17 @@ namespace IMS
           DataTable dt=  DB.GetTable("*","CostSetup","","");
             foreach(DataRow dr in dt.Rows)
             {
-                G.listColorCost.Add(new ColorCost(dr["Category"].ToString(), Convert.ToDouble(dr["VariableCost"]), Convert.ToDouble(dr["FixedCost"]), Convert.ToDouble(dr["Transportation"]), Convert.ToDouble(dr["OtherCost"])));
+                string expression = string.Format("{0} like '%{1}%'", "MAITM_CATCD",dr["Category"].ToString());//Search Expression
+                DataRow[] row = G.dtColor.Select(expression);
+                if (row.Count() > 0)
+                    G.listColorCost.Add(new ColorCost(dr["Category"].ToString(), Convert.ToDouble(dr["VariableCost"]), Convert.ToDouble(dr["FixedCost"]), Convert.ToDouble(dr["Transportation"]), Convert.ToDouble(dr["OtherCost"])));
+                else
+                {
+                 String strSQL= "DELETE CostSetup WHERE Category = '" + dr["Category"].ToString() + "'";
+                   DB.ExecProc(strSQL);
+                }
             }
+
             GetData();
             //LoadData();
             LoadDataColor();

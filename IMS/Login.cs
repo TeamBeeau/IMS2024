@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using CryptoLibrary;
@@ -561,18 +562,26 @@ namespace IMS
                             cols.DefaultValue = "0";
                             cols.ColumnName = "PackingCost";
                             G.dtPacking.Columns.AddRange(new DataColumn[] { cols });
-                          
+							G.quotation2.LoaddtColor();
                             G.quotation2.RefreshCal();
 						}
                        // if (File.Exists("PackingCost.conf"))
                        //  G.listPackingCost = Access.LoadPackingCost();
                         G.listColorCost = new List<ColorCost>();
                         DataTable dt = DB.GetTable("*", "CostSetup", "", "");
+                       
                         foreach (DataRow dr in dt.Rows)
                         {
-                            G.listColorCost.Add(new ColorCost(dr["Category"].ToString(), Convert.ToDouble(dr["VariableCost"]), Convert.ToDouble(dr["FixedCost"]), Convert.ToDouble(dr["Transportation"]), Convert.ToDouble(dr["OtherCost"])));
+                            string expression = string.Format("{0} like '%{1}%'", "MAITM_CATCD", dr["Category"].ToString());//Search Expression
+                            DataRow[] row = G.dtColor.Select(expression);
+                            if (row.Count() > 0)
+                                G.listColorCost.Add(new ColorCost(dr["Category"].ToString(), Convert.ToDouble(dr["VariableCost"]), Convert.ToDouble(dr["FixedCost"]), Convert.ToDouble(dr["Transportation"]), Convert.ToDouble(dr["OtherCost"])));
+                            else
+                            {
+                                String strSQL2 = "DELETE CostSetup WHERE Category = '" + dr["Category"].ToString() + "'";
+                                DB.ExecProc(strSQL2);
+                            }
                         }
-                       
 #if !DEBUG
 						if (!Dongle.CheckForDongle())
 							{

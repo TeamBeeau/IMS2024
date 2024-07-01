@@ -1933,7 +1933,7 @@ namespace IMS
             this.cbPACKING.DataTable = null;
             this.cbPACKING.DisplayMember = null;
             this.cbPACKING.DropdownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPACKING.HasBlankValue = false;
+            this.cbPACKING.HasBlankValue = true;
             this.cbPACKING.Location = new System.Drawing.Point(99, 30);
             this.cbPACKING.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbPACKING.Name = "cbPACKING";
@@ -2910,7 +2910,7 @@ namespace IMS
                
             strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("'", cbPACKING.SelectedValue), "', ")));
 			else
-                strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("'", "CAN20"), "', ")));
+                strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("'", ""), "', ")));
 
 
             strSQL = strSQL + "'" + Conversions.ToString(Conversion.Val(numQTY.Value)) + "', ";
@@ -3328,7 +3328,7 @@ namespace IMS
 			if (!UOM.ToLower().Trim().Contains("kg"))
 			{
 				numSTDWGT.Value = 1;
-				cbPACKING.SelectedValue = "Kg";
+				//cbPACKING.SelectedValue = "";
 
 			}
 			else
@@ -3428,7 +3428,7 @@ namespace IMS
             lblQTY.Text = "Quantity (" + UOM + ")";
             if (!UOM.ToLower().Trim().Contains("kg"))
             {
-				cbPACKING.SelectedValue = "01M3";
+				//cbPACKING.SelectedValue = "01M3";
 
                 cbPACKING.Enabled = true;
                 numSTDWGT.Value = 1;

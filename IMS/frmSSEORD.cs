@@ -3430,7 +3430,7 @@ namespace IMS
             {
 				//cbPACKING.SelectedValue = "01M3";
 
-                cbPACKING.Enabled = true;
+                cbPACKING.Enabled = false;
                 numSTDWGT.Value = 1;
 				
                 cbPACKING.SelectedValue = "";

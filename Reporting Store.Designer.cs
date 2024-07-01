@@ -163,6 +163,7 @@ namespace IMS
             this.cbHCATCD.Name = "cbHCATCD";
             this.cbHCATCD.Size = new System.Drawing.Size(209, 39);
             this.cbHCATCD.TabIndex = 4;
+            cbHCATCD.SelectedIndexChanged += CbHCATCD_SelectedIndexChanged;
             // 
             // cbHGRPCD
             // 

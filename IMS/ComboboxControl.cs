@@ -338,8 +338,8 @@ namespace IMS
             }
         }
 
-      
 
+		public DataTable dt;
         public void LoadData()
 		{
             TextBox1.Text= TextBox1.Text.Replace("\r\n", "");
@@ -347,7 +347,7 @@ namespace IMS
             string strSQL = string.Empty;
 			OleDbCommand cmd = new OleDbCommand();
 			OleDbDataAdapter adp = new OleDbDataAdapter();
-			DataTable dt = new DataTable();
+			dt = new DataTable();
 			ComboBox1.SelectedIndex = -1;
 			ComboBox1.Text = string.Empty;
 			if (Operators.CompareString(mValueMember, mDisplayMember, false) != 0)

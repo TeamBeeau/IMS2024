@@ -1341,7 +1341,7 @@ namespace IMS
 			this.lblSTDWGT = new System.Windows.Forms.Label();
 			this.Label13 = new System.Windows.Forms.Label();
 			this.cbPACKING = new IMS.ComboboxControl();
-			//cbPACKING.Enabled = false;
+			cbPACKING.Enabled = true;
 			this.numSTDWGT = new IMS.NumControl();
 			this.Label20 = new System.Windows.Forms.Label();
 			this.txtCPTNO = new System.Windows.Forms.TextBox();
@@ -3430,7 +3430,7 @@ namespace IMS
             {
 				cbPACKING.SelectedValue = "01M3";
 
-                cbPACKING.Enabled = false;
+                cbPACKING.Enabled = true;
                 numSTDWGT.Value = 1;
 				
                 cbPACKING.SelectedValue = "";

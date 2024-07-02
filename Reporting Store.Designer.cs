@@ -34,8 +34,11 @@ namespace IMS
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numMin = new System.Windows.Forms.NumericUpDown();
+            this.lb1 = new System.Windows.Forms.Label();
+            this.numMax = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.cbITMTY = new IMS.ComboboxControl();
             this.btnSEARCH = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -47,13 +50,21 @@ namespace IMS
             this.cbHITMTY = new System.Windows.Forms.ComboBox();
             this.dgvWH1 = new System.Windows.Forms.DataGridView();
             this.col9 = new System.Windows.Forms.DataGridViewColumn();
+            this.workRefresh = new System.ComponentModel.BackgroundWorker();
+            this.cbITMTY = new IMS.ComboboxControl();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvWH1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.numMin);
+            this.panel1.Controls.Add(this.lb1);
+            this.panel1.Controls.Add(this.numMax);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.cbITMTY);
             this.panel1.Controls.Add(this.btnSEARCH);
@@ -72,6 +83,70 @@ namespace IMS
             this.panel1.Size = new System.Drawing.Size(1609, 341);
             this.panel1.TabIndex = 1;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(858, 90);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(129, 31);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Min Level";
+            // 
+            // numMin
+            // 
+            this.numMin.Location = new System.Drawing.Point(1012, 87);
+            this.numMin.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.numMin.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numMin.Name = "numMin";
+            this.numMin.Size = new System.Drawing.Size(156, 38);
+            this.numMin.TabIndex = 18;
+            this.numMin.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numMin.ValueChanged += new System.EventHandler(this.numMin_ValueChanged);
+            // 
+            // lb1
+            // 
+            this.lb1.AutoSize = true;
+            this.lb1.Location = new System.Drawing.Point(858, 30);
+            this.lb1.Name = "lb1";
+            this.lb1.Size = new System.Drawing.Size(136, 31);
+            this.lb1.TabIndex = 17;
+            this.lb1.Text = "Max Level";
+            // 
+            // numMax
+            // 
+            this.numMax.Location = new System.Drawing.Point(1012, 22);
+            this.numMax.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.numMax.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numMax.Name = "numMax";
+            this.numMax.Size = new System.Drawing.Size(156, 38);
+            this.numMax.TabIndex = 16;
+            this.numMax.Value = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numMax.ValueChanged += new System.EventHandler(this.numMax_ValueChanged);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -82,30 +157,10 @@ namespace IMS
             this.label3.TabIndex = 14;
             this.label3.Text = "Item Code";
             // 
-            // cbITMTY
-            // 
-            this.cbITMTY.BlankValue = null;
-            this.cbITMTY.ComboboxWidth = 336;
-            this.cbITMTY.DataTable = null;
-            this.cbITMTY.DisplayMember = null;
-            this.cbITMTY.DropdownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-            this.cbITMTY.HasBlankValue = false;
-            this.cbITMTY.Location = new System.Drawing.Point(171, 155);
-            this.cbITMTY.Margin = new System.Windows.Forms.Padding(5);
-            this.cbITMTY.Name = "cbITMTY";
-            this.cbITMTY.SelectedIndex = -1;
-            this.cbITMTY.SelectedItem = null;
-            this.cbITMTY.SelectedValue = null;
-            this.cbITMTY.Size = new System.Drawing.Size(936, 64);
-            this.cbITMTY.TabIndex = 13;
-            this.cbITMTY.TextMultiline = true;
-            this.cbITMTY.ValueMember = null;
-            this.cbITMTY.WhereClause = null;
-            // 
             // btnSEARCH
             // 
             this.btnSEARCH.Image = global::IMS_Resources.Refresh;
-            this.btnSEARCH.Location = new System.Drawing.Point(19, 227);
+            this.btnSEARCH.Location = new System.Drawing.Point(12, 227);
             this.btnSEARCH.Name = "btnSEARCH";
             this.btnSEARCH.Size = new System.Drawing.Size(281, 95);
             this.btnSEARCH.TabIndex = 12;
@@ -119,7 +174,7 @@ namespace IMS
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(685, 95);
+            this.label5.Location = new System.Drawing.Point(414, 95);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(185, 31);
             this.label5.TabIndex = 10;
@@ -129,7 +184,7 @@ namespace IMS
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(684, 25);
+            this.label4.Location = new System.Drawing.Point(413, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(168, 31);
             this.label4.TabIndex = 9;
@@ -159,17 +214,17 @@ namespace IMS
             // 
             this.cbHCATCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbHCATCD.FormattingEnabled = true;
-            this.cbHCATCD.Location = new System.Drawing.Point(886, 87);
+            this.cbHCATCD.Location = new System.Drawing.Point(605, 87);
             this.cbHCATCD.Name = "cbHCATCD";
             this.cbHCATCD.Size = new System.Drawing.Size(209, 39);
             this.cbHCATCD.TabIndex = 4;
-            cbHCATCD.SelectedIndexChanged += CbHCATCD_SelectedIndexChanged;
+            this.cbHCATCD.SelectedIndexChanged += new System.EventHandler(this.CbHCATCD_SelectedIndexChanged);
             // 
             // cbHGRPCD
             // 
             this.cbHGRPCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbHGRPCD.FormattingEnabled = true;
-            this.cbHGRPCD.Location = new System.Drawing.Point(885, 22);
+            this.cbHGRPCD.Location = new System.Drawing.Point(604, 22);
             this.cbHGRPCD.Name = "cbHGRPCD";
             this.cbHGRPCD.Size = new System.Drawing.Size(209, 39);
             this.cbHGRPCD.TabIndex = 3;
@@ -203,7 +258,7 @@ namespace IMS
             this.dgvWH1.BackgroundColor = System.Drawing.Color.Lavender;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -234,6 +289,31 @@ namespace IMS
             this.col9.ReadOnly = true;
             this.col9.Width = 200;
             // 
+            // workRefresh
+            // 
+            this.workRefresh.DoWork += new System.ComponentModel.DoWorkEventHandler(this.workRefresh_DoWork);
+            this.workRefresh.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.workRefresh_RunWorkerCompleted);
+            // 
+            // cbITMTY
+            // 
+            this.cbITMTY.BlankValue = null;
+            this.cbITMTY.ComboboxWidth = 336;
+            this.cbITMTY.DataTable = null;
+            this.cbITMTY.DisplayMember = null;
+            this.cbITMTY.DropdownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+            this.cbITMTY.HasBlankValue = false;
+            this.cbITMTY.Location = new System.Drawing.Point(171, 155);
+            this.cbITMTY.Margin = new System.Windows.Forms.Padding(5);
+            this.cbITMTY.Name = "cbITMTY";
+            this.cbITMTY.SelectedIndex = -1;
+            this.cbITMTY.SelectedItem = null;
+            this.cbITMTY.SelectedValue = null;
+            this.cbITMTY.Size = new System.Drawing.Size(944, 64);
+            this.cbITMTY.TabIndex = 13;
+            this.cbITMTY.TextMultiline = true;
+            this.cbITMTY.ValueMember = null;
+            this.cbITMTY.WhereClause = null;
+            // 
             // Reporting_Store
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -247,6 +327,8 @@ namespace IMS
             this.Shown += new System.EventHandler(this.Reporting_Store_Shown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvWH1)).EndInit();
             this.ResumeLayout(false);
 
@@ -267,5 +349,10 @@ namespace IMS
         private DataGridViewColumn col9;
         private Label label3;
         private ComboboxControl cbITMTY;
+        private NumericUpDown numMax;
+        private Label lb1;
+        private Label label6;
+        private NumericUpDown numMin;
+        private System.ComponentModel.BackgroundWorker workRefresh;
     }
 }

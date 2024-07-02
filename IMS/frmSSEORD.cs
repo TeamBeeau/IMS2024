@@ -3126,6 +3126,7 @@ namespace IMS
                     MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Record deleted!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     Header();
                 }
+				
 			}
 		}
 

@@ -21,6 +21,9 @@ using Microsoft.VisualBasic.CompilerServices;
 using System.Reflection;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Data.SqlClient;
+using Microsoft.Office.Interop.Excel;
+using DataTable = System.Data.DataTable;
+using System.Runtime;
 
 
 namespace IMS
@@ -31,70 +34,47 @@ namespace IMS
         public Reporting_Store()
         {
             InitializeComponent();
+
             this.cbITMTY.HasBlankValue = true;
-            DataGridViewColumn newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();
-            newCol.Name = "col1";
-            newCol.HeaderText = "Item Code";
-            newCol.Visible = true;
-            newCol.Width = 200;
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();
-            newCol.HeaderText = "RESIN";
-            newCol.Name = "col2";
-            newCol.Visible = true;
-            newCol.Width = 80;
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();
-            newCol.HeaderText = "BLENDING";
-            newCol.Visible = true;
-            newCol.Width = 80;
-            newCol.Name = "col3";
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();// add a column to the grid
-            newCol.HeaderText = "WB-WIB";
-            newCol.Visible = true;
-            newCol.Name = "col4";
-            newCol.Width = 80;
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();// add a column to the grid
-            newCol.HeaderText = "SB-WIP";
-            newCol.Visible = true;
-            newCol.Width = 80;
-            newCol.Name = "col5";
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();// add a column to the grid
-            newCol.HeaderText = "FG";
-            newCol.Visible = true;
-            newCol.Width = 80;
-            newCol.Name = "col6";
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();// add a column to the grid
-            newCol.HeaderText = "WH1";
-            newCol.Visible = true;
-            newCol.Width = 80;
-            newCol.Name = "col7";
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();// add a column to the grid
-            newCol.HeaderText = "WH2";
-            newCol.Visible = true;
-            newCol.Width = 80;
-            newCol.Name = "col8";
-            dgvWH1.Columns.Add(newCol);
-            newCol = new DataGridViewColumn();
-            newCol.CellTemplate = new DataGridViewTextBoxCell();// add a column to the grid
-            newCol.HeaderText = "BALANCE";
-            newCol.Visible = true;
-            newCol.Width = 200;
-            newCol.Name = "col9";
-            dgvWH1.Columns.Add(newCol);
+            dtRP = new DataTable();
+            DataColumn newCol1 = new DataColumn();
+            newCol1.ColumnName = "col1";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col2";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col3";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col4";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col5";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col6";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col7";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.ColumnName = "col8";
+            dtRP.Columns.Add(newCol1);
+
+            newCol1 = new DataColumn();
+            newCol1.DataType = typeof(double);
+            newCol1.ColumnName = "col9";
+            dtRP.Columns.Add(newCol1);
+
+
         }
 
         private void CbHCATCD_SelectedIndexChanged(object sender, EventArgs e)
@@ -102,44 +82,27 @@ namespace IMS
             cbITMTY.SelectedIndex = -1;
             BindComboBox("ITMCD");
         }
-
-        private void LoadBlanceTotal()
-        {
-          
-        }
         private void Reporting_Store_Load(object sender, EventArgs e)
         {
             Common.Set_FormLanguage(this);
-           // BindComboBox("HITMTY");
-           BindComboBox("ITMTY");
-           
-         
+            // BindComboBox("HITMTY");
+            BindComboBox("ITMTY");
+
+
             //dgvWH1.Rows[0].Selected = true;
 
         }
+        DataTable dtRP = new System.Data.DataTable();
         private void Header()
         {
-            string strSQL = "EXEC spMAITM '0', ";
-            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHITMTY.SelectedValue)) + "', ";
-            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHCATCD.SelectedValue)) + "', ";
-            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHGRPCD.SelectedValue)) + "', ";
-            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHBRAND.SelectedValue)) + "', ";
-        
-            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbITMTY.SelectedValue)) + "', ";
-            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbITMTY.SelectedValue)) + "', ";
-            strSQL = strSQL + "'', ";
-            strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, "'zzzzz'"));
-            dgvWH1.Rows.Clear();
-         
-   
-                
-            
-            DataTable dt2 = DB.ExecProc(strSQL);
-         
+          
+
+            System.Data.DataTable dt2 = DB.ExecProc(strSQL);
+
             List<string> list = dt2.Rows.OfType<DataRow>().Select(dr => (string)dr["MAITM_ITMCD"]).ToList();
-            
-            DataTable dt = DB.ExecProc("SELECT INTRN_ITMCD,INTRN_LOCID,INTRN_BALQT FROM vwItemBalanceByGRLNO WHERE INTRN_ITMCD BETWEEN '" + list[0] + "' AND '" + list[list.Count-1] +"' ORDER BY INTRN_ITMCD ASC");
-            if (dt.Rows.Count > 80000)
+
+            System.Data.DataTable dt = DB.ExecProc("SELECT INTRN_ITMCD,INTRN_LOCID,INTRN_BALQT FROM vwItemBalanceByGRLNO WHERE INTRN_ITMCD BETWEEN '" + list[0] + "' AND '" + list[list.Count - 1] + "' ORDER BY INTRN_ITMCD ASC");
+            if (dt.Rows.Count > 200000)
             {
                 MessageBox.Show("Data exceeds display limit!");
                 return;
@@ -224,33 +187,68 @@ namespace IMS
                                 }
                             }
                         }
-                       
-                            
+
+
                     }
                     else
                     {
-                        double sum = num1 + num2 + num3 + num4 + num5 + num6 + num7;
+                        double balanceValue = num1 + num2 + num3 + num4 + num5 + num6 + num7;
+                       balanceValue = Math.Round(balanceValue,2);
                         item = dr["INTRN_ITMCD"].ToString();
-                        dgvWH1.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, sum);
+                        dtRP.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, balanceValue);
                         num1 = 0; num2 = 0; num3 = 0; num4 = 0; num5 = 0; num6 = 0; num7 = 0;
+                        
+                        //if (balanceValue >(double) numMax.Value)
+                        //{
+
+                        //    dgvWH1.Rows[dgvWH1.Rows.Count-1].DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;
+                            
+                        //}
+                        //else if (balanceValue < (double)numMin.Value)
+                        //{
+                        //    dgvWH1.Rows[dgvWH1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.PaleVioletRed;                         
+                        //}
+                        //else 
+                        //{
+                        //    dgvWH1.Rows[dgvWH1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightGreen;
+
+                        //}
+                       
                     };
                 }
                 if (item == dt.Rows[0]["INTRN_ITMCD"].ToString())
                 {
-                    double sum = num1 + num2 + num3 + num4 + num5 + num6 + num7;
-                   
-                    dgvWH1.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, sum);
+                    double balanceValue = num1 + num2 + num3 + num4 + num5 + num6 + num7;
+                    balanceValue = Math.Round(balanceValue, 2);
+                    dtRP.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, balanceValue);
                     num1 = 0; num2 = 0; num3 = 0; num4 = 0; num5 = 0; num6 = 0; num7 = 0;
-
+                   
                 }
-
-            }
+                 }
         }
 
-
+        string strSQL = "";
         private void button1_Click(object sender, EventArgs e)
         {
-            Header();
+            btnSEARCH.Enabled = false;
+            btnSEARCH.Text = "SEARCHING..";
+            dtRP.Clear();
+             strSQL = "EXEC spMAITM '0', ";
+            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHITMTY.SelectedValue)) + "', ";
+            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHCATCD.SelectedValue)) + "', ";
+            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHGRPCD.SelectedValue)) + "', ";
+            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHBRAND.SelectedValue)) + "', ";
+
+            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbITMTY.SelectedValue)) + "', ";
+            strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbITMTY.SelectedValue)) + "', ";
+            strSQL = strSQL + "'', ";
+            strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, "'zzzzz'"));
+
+   //         dgvWH1.Rows.Clear();
+            if (!workRefresh.IsBusy)
+            workRefresh.RunWorkerAsync();
+          
+           
         }
 
         private void cbHITMTY_SelectedIndexChanged(object sender, EventArgs e)
@@ -321,7 +319,7 @@ namespace IMS
                 cbITMTY.DisplayMember = "MAITM_ITMCD";
                 cbITMTY.LoadData();
             }
-           
+
         }
 
         private void Reporting_Store_Shown(object sender, EventArgs e)
@@ -335,6 +333,74 @@ namespace IMS
         {
             //BindComboBox("GRPCD");
         }
+      
+
+        private void numMax_ValueChanged(object sender, EventArgs e)
+        {
+            if (numMax.Value < numMin.Value) numMax.Value = numMin.Value;
+     
+        }
+
+        private void numMin_ValueChanged(object sender, EventArgs e)
+        {
+            if (numMin.Value > numMax.Value) numMin.Value = numMax.Value;
+          
+        }
+
+        private void workRefresh_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Header();
+        }
+
+        private void workRefresh_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            dgvWH1.DataSource = dtRP;
+            dgvWH1.Columns[0].HeaderText = "Item Code";
+            dgvWH1.Columns[1].HeaderText = "RESIN";
+            dgvWH1.Columns[2].HeaderText = "BLENDING";
+            dgvWH1.Columns[3].HeaderText = "WB-WIB";
+            dgvWH1.Columns[4].HeaderText = "SB-WIP";
+            dgvWH1.Columns[5].HeaderText = "FG";
+            dgvWH1.Columns[6].HeaderText = "WH1";
+            dgvWH1.Columns[7].HeaderText = "WH2";
+            dgvWH1.Columns[8].HeaderText = "BALANCE";
+            dgvWH1.Columns[0].Width = 150;
+            dgvWH1.Columns[8].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9, FontStyle.Bold);
+            dgvWH1.Columns[0].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[1].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[2].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[3].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[4].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[5].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[6].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[7].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Sort(dgvWH1.Columns["Col9"], ListSortDirection.Ascending);//NEWDB
+            dgvWH1.Refresh();
+
+            foreach (DataGridViewRow dr in dgvWH1.Rows)
+            {
+                Double balanceValue = Convert.ToDouble(dr.Cells["Col9"].Value);
+                if (balanceValue > (double)numMax.Value)
+                {
+
+                    dr.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 0); 
+
+                }
+                else if (balanceValue < (double)numMin.Value)
+                {
+                    dr.DefaultCellStyle.BackColor = Color.FromArgb(255,160,122);
+                }
+                else
+                {
+                    dr.DefaultCellStyle.BackColor = Color.FromArgb(144, 238, 144); 
+
+                }
+
+            }
+            btnSEARCH.Text = "SEARCH";
+            btnSEARCH.Enabled = true;
+        }
     }
-}
+    }
+
    

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -326,11 +327,22 @@ namespace IMS
 				base.Dispose(disposing);
 			}
 		}
-
+		ContextMenuStrip menu = new ContextMenuStrip();
+		
 		[System.Diagnostics.DebuggerStepThrough]
+
 		private void InitializeComponent()
 		{
-			this.TableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+			this.ContextMenuStrip = menu;
+            ToolStripMenuItem btnDelete1 = new ToolStripMenuItem();
+			btnDelete1.Text = "Delete SO chưa ra WO Sản Xuất";
+            btnDelete1.Click += BtnDelete1_Click;
+            ToolStripMenuItem btnDelete2 = new ToolStripMenuItem();
+            btnDelete2.Text = "Delete SO đang WO Sản Xuất";
+            btnDelete2.Click += BtnDelete2_Click;
+            this.menu.Items.Add(btnDelete1);
+            this.menu.Items.Add(btnDelete2);
+            this.TableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.Label7 = new System.Windows.Forms.Label();
 			this.btnExcel = new System.Windows.Forms.Button();
 			this.Label1 = new System.Windows.Forms.Label();
@@ -650,7 +662,60 @@ namespace IMS
 			base.ResumeLayout(false);
 		}
 
-       
+        private void BtnDelete2_Click(object sender, EventArgs e)
+        {
+
+            if (dgvSO.RowCount != 0)
+            {
+                string strMSG = Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Are you sure want to delete this record?") + "\r\n";
+               
+                if (MessageBox.Show(strMSG, "Inovex Business Suites", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.No)
+                {
+                    foreach (DataGridViewRow row in dgvSO.Rows)
+                    {
+                        if (Operators.ConditionalCompareObjectEqual(row.Cells["ORD_STATUS"].Value, 1, false))
+                        {
+                            string strDOCNO = row.Cells["SLORD_DOCNO"].Value.ToString();
+                            string strSQL = "DELETE SLORD_TBL WHERE SLORD_DOCNO = '" + strDOCNO + "' ";
+                            DB.DBExecute(strSQL);
+                        }
+
+                    }
+                    MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Record deleted!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+                }
+
+            }
+            btnRetrieve.PerformClick();
+        }
+
+        private void BtnDelete1_Click(object sender, EventArgs e)
+        {
+            if (dgvSO.RowCount != 0)
+            {
+                string strMSG = Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Are you sure want to delete this record?") + "\r\n";
+              
+                if (MessageBox.Show(strMSG, "Inovex Business Suites", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.No)
+                {
+                    foreach (DataGridViewRow row in dgvSO.Rows)
+                    {
+                        if (Operators.ConditionalCompareObjectEqual(row.Cells["ORD_STATUS"].Value, 0, false))
+                        {
+                            string strDOCNO = row.Cells["SLORD_DOCNO"].Value.ToString();
+                            string strSQL = "DELETE SLORD_TBL WHERE SLORD_DOCNO = '" + strDOCNO + "' ";
+                            DB.DBExecute(strSQL);
+                        }
+                    
+                    }
+                    MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "Record deleted!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                   
+                }
+
+            }
+			btnRetrieve.PerformClick();
+
+        
+    }
 
         private void frmSLQSLO_Shown(object sender, EventArgs e)
 		{
@@ -755,7 +820,7 @@ namespace IMS
 			string strSQL = "EXEC spSLQSLO " + Conversions.ToString(intOption) + ", ";
 			strSQL = strSQL + "'" + Common.gfSQLDate(dtFrom) + "', ";
 			strSQL = strSQL + "'" + Common.gfSQLDate(dtTo) + "'";
-			System.Data.DataTable dt = DB.ExecProc(strSQL);
+            System.Data.DataTable dt = DB.ExecProc(strSQL);
 			if (dt.Rows.Count == 0)
 			{
 				MessageBox.Show(Common.gfConvertLanguage(PublicVar.gstrLanguage, Conversions.ToString(base.Tag), "No data found!"), "Inovex Business Suites", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
@@ -765,7 +830,8 @@ namespace IMS
 			dataGridView.DataSource = dt;
 			int i = default(int);
 			dataGridView.Columns[i].Visible = false;
-			checked
+			dataGridView.Sort(dataGridView.Columns["ORD_STATUS"], ListSortDirection.Ascending);//NEWDB
+            checked
 			{
 				i++;
 				dataGridView.Columns[i].Visible = true;
@@ -855,21 +921,20 @@ namespace IMS
 					if (Operators.ConditionalCompareObjectEqual(dataGridView2.Rows[i].Cells["ORD_STATUS"].Value, 0, false))
 					{
 						dataGridView2.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;
-					}
+                    }
 					if (Operators.ConditionalCompareObjectEqual(dataGridView2.Rows[i].Cells["ORD_STATUS"].Value, 1, false))
 					{
 						dataGridView2.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
-					}
+                    }
 					if (Operators.ConditionalCompareObjectEqual(dataGridView2.Rows[i].Cells["ORD_STATUS"].Value, 2, false))
 					{
 						dataGridView2.Rows[i].DefaultCellStyle.BackColor = Color.LightGreen;
-					}
-				}
+                    }
+                }
 				dataGridView2.Refresh();
 				dataGridView2 = null;
 			}
 		}
-
 		private void RefreshGridFG()
 		{
 			int i = 0;

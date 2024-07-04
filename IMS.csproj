@@ -17,9 +17,6 @@
     <StartupObject></StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="CryptoLibrary">
       <HintPath>C:\Lib\CryptoLibrary.dll</HintPath>
     </Reference>
@@ -47,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IMS.My\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.2.1" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="IMS.frmLM1XCS.Designer.cs">

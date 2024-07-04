@@ -776,21 +776,18 @@ namespace IMS
 		}
         private void dgvWO_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            //if (dgvSO.CurrentRow.DefaultCellStyle.BackColor == Color.LightSalmon)
+            //{
+            //    frm = new frmPDEWKO();
+
+            //    ShowChildForm(RuntimeHelpers.GetObjectValue(sender), e, frm);
+            //    tmShow = new Timer(); tmShow.Interval = 100;
+            //    tmShow.Tick += TmShow_Tick;
+
+            //    tmShow.Enabled = true;
 
 
-            if (dgvSO.CurrentRow.DefaultCellStyle.BackColor == Color.LightSalmon)
-            {
-                frm = new frmPDEWKO();
-
-                ShowChildForm(RuntimeHelpers.GetObjectValue(sender), e, frm);
-                tmShow = new Timer(); tmShow.Interval = 100;
-                tmShow.Tick += TmShow_Tick;
-
-                tmShow.Enabled = true;
-
-
-            }
-
+            //}
         }
         private void TmShow_Tick(object sender, EventArgs e)
         {

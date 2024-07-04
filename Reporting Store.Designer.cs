@@ -101,7 +101,7 @@ namespace IMS
             0,
             0});
             this.numMin.Minimum = new decimal(new int[] {
-            1,
+            0,
             0,
             0,
             0});
@@ -109,7 +109,7 @@ namespace IMS
             this.numMin.Size = new System.Drawing.Size(156, 38);
             this.numMin.TabIndex = 18;
             this.numMin.Value = new decimal(new int[] {
-            1,
+            0,
             0,
             0,
             0});

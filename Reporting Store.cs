@@ -14,7 +14,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms;
 using CrystalDecisions.CrystalReports.Engine;
 using IMS.My.Resources;
 using Microsoft.VisualBasic.CompilerServices;
@@ -24,7 +23,8 @@ using System.Data.SqlClient;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
 using System.Runtime;
-
+using System.Runtime.InteropServices;
+using OfficeOpenXml;
 
 namespace IMS
 {
@@ -34,7 +34,6 @@ namespace IMS
         public Reporting_Store()
         {
             InitializeComponent();
-
             this.cbITMTY.HasBlankValue = true;
             dtRP = new DataTable();
             DataColumn newCol1 = new DataColumn();
@@ -95,7 +94,7 @@ namespace IMS
         DataTable dtRP = new System.Data.DataTable();
         private void Header()
         {
-          
+
 
             System.Data.DataTable dt2 = DB.ExecProc(strSQL);
 
@@ -193,16 +192,16 @@ namespace IMS
                     else
                     {
                         double balanceValue = num1 + num2 + num3 + num4 + num5 + num6 + num7;
-                       balanceValue = Math.Round(balanceValue,2);
+                        balanceValue = Math.Round(balanceValue, 2);
                         item = dr["INTRN_ITMCD"].ToString();
                         dtRP.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, balanceValue);
                         num1 = 0; num2 = 0; num3 = 0; num4 = 0; num5 = 0; num6 = 0; num7 = 0;
-                        
+
                         //if (balanceValue >(double) numMax.Value)
                         //{
 
                         //    dgvWH1.Rows[dgvWH1.Rows.Count-1].DefaultCellStyle.BackColor = Color.LightGoldenrodYellow;
-                            
+
                         //}
                         //else if (balanceValue < (double)numMin.Value)
                         //{
@@ -213,7 +212,7 @@ namespace IMS
                         //    dgvWH1.Rows[dgvWH1.Rows.Count - 1].DefaultCellStyle.BackColor = Color.LightGreen;
 
                         //}
-                       
+
                     };
                 }
                 if (item == dt.Rows[0]["INTRN_ITMCD"].ToString())
@@ -222,9 +221,9 @@ namespace IMS
                     balanceValue = Math.Round(balanceValue, 2);
                     dtRP.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, balanceValue);
                     num1 = 0; num2 = 0; num3 = 0; num4 = 0; num5 = 0; num6 = 0; num7 = 0;
-                   
+
                 }
-                 }
+            }
         }
 
         string strSQL = "";
@@ -233,7 +232,7 @@ namespace IMS
             btnSEARCH.Enabled = false;
             btnSEARCH.Text = "SEARCHING..";
             dtRP.Clear();
-             strSQL = "EXEC spMAITM '0', ";
+            strSQL = "EXEC spMAITM '0', ";
             strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHITMTY.SelectedValue)) + "', ";
             strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHCATCD.SelectedValue)) + "', ";
             strSQL = strSQL + "'" + Common.gfValidSQLStr(Conversions.ToString(cbHGRPCD.SelectedValue)) + "', ";
@@ -244,11 +243,9 @@ namespace IMS
             strSQL = strSQL + "'', ";
             strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, "'zzzzz'"));
 
-   //         dgvWH1.Rows.Clear();
+            //         dgvWH1.Rows.Clear();
             if (!workRefresh.IsBusy)
-            workRefresh.RunWorkerAsync();
-          
-           
+                workRefresh.RunWorkerAsync();
         }
 
         private void cbHITMTY_SelectedIndexChanged(object sender, EventArgs e)
@@ -333,18 +330,15 @@ namespace IMS
         {
             //BindComboBox("GRPCD");
         }
-      
-
         private void numMax_ValueChanged(object sender, EventArgs e)
         {
             if (numMax.Value < numMin.Value) numMax.Value = numMin.Value;
-     
         }
 
         private void numMin_ValueChanged(object sender, EventArgs e)
         {
             if (numMin.Value > numMax.Value) numMin.Value = numMax.Value;
-          
+
         }
 
         private void workRefresh_DoWork(object sender, DoWorkEventArgs e)
@@ -365,15 +359,46 @@ namespace IMS
             dgvWH1.Columns[7].HeaderText = "WH2";
             dgvWH1.Columns[8].HeaderText = "BALANCE";
             dgvWH1.Columns[0].Width = 150;
-            dgvWH1.Columns[8].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9, FontStyle.Bold);
-            dgvWH1.Columns[0].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[1].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[2].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[3].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[4].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[5].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[6].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
-            dgvWH1.Columns[7].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 9);
+            dgvWH1.Columns[8].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+            dgvWH1.Columns[0].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[1].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[2].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[3].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[4].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[5].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[6].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[7].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
+            dgvWH1.Columns[8].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[8].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[7].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[7].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[6].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[6].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[5].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[5].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[4].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[4].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[3].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[3].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[2].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[2].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvWH1.Columns[1].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
+            dgvWH1.Columns[1].DefaultCellStyle.Format = "0,##.000";
+            dgvWH1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvWH1.Sort(dgvWH1.Columns["Col9"], ListSortDirection.Ascending);//NEWDB
             dgvWH1.Refresh();
 
@@ -383,24 +408,35 @@ namespace IMS
                 if (balanceValue > (double)numMax.Value)
                 {
 
-                    dr.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 0); 
+                    dr.DefaultCellStyle.ForeColor = Color.FromArgb(0, 100, 100);//green
 
                 }
                 else if (balanceValue < (double)numMin.Value)
                 {
-                    dr.DefaultCellStyle.BackColor = Color.FromArgb(255,160,122);
+                    dr.DefaultCellStyle.ForeColor = Color.FromArgb(165, 42, 42);//red
+                    dr.Cells[8].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[0].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[1].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[2].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[3].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[4].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[5].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[6].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+                    dr.Cells[7].Style.Font = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
                 }
                 else
                 {
-                    dr.DefaultCellStyle.BackColor = Color.FromArgb(144, 238, 144); 
-
+                    dr.DefaultCellStyle.ForeColor = Color.FromArgb(0, 0, 0);//black
                 }
 
             }
             btnSEARCH.Text = "SEARCH";
             btnSEARCH.Enabled = true;
         }
+        
     }
-    }
+}
+
+
 
    

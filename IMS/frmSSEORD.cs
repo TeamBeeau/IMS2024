@@ -1700,7 +1700,8 @@ namespace IMS
 			this.numQTY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.numQTY.ThousandSeperator = false;
 			this.numQTY.Value = 0.0;
-			this.Label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.numQTY.Validated += NumQTY_Validated; ;
+            this.Label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.Label4.AutoSize = true;
 			this.Label4.ForeColor = System.Drawing.SystemColors.HotTrack;
 			this.Label4.Location = new System.Drawing.Point(3, 6);
@@ -2386,7 +2387,20 @@ namespace IMS
 			base.ResumeLayout(false);
 		}
 
-		private void frmSSEORD_FormClosing(object sender, FormClosingEventArgs e)
+		private void NumQTY_Validated(object sender, EventArgs e)
+		{
+			if (UOM.ToLower().Trim().Contains("kg"))
+			{
+				if (numSTDWGT.Value == null)
+				{
+					return;
+				}
+				numPACKING.Value = Math.Round((double)numQTY.Value / (double)numSTDWGT.Value, 2);
+				numPACKING.Enabled = false;
+			}
+		}
+
+        private void frmSSEORD_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			Form[] mdiChildren = base.ParentForm.MdiChildren;
 			bool blnChildFormExists = default(bool);
@@ -3328,6 +3342,7 @@ namespace IMS
             lblQTY.Text = "Quantity (" + UOM + ")";
 			if (!UOM.ToLower().Trim().Contains("kg"))
 			{
+				numPACKING.Value = 0;
 				numSTDWGT.Value = 1;
 				//cbPACKING.SelectedValue = "";
 
@@ -3430,7 +3445,6 @@ namespace IMS
             if (!UOM.ToLower().Trim().Contains("kg"))
             {
 				//cbPACKING.SelectedValue = "01M3";
-
                 cbPACKING.Enabled = false;
                 numSTDWGT.Value = 1;
 				

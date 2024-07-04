@@ -20,7 +20,7 @@ namespace IMS
     [DesignerGenerated]
 	public class frmPDEWKO : Form
 	{
-		private IContainer components;
+        private IContainer components;
 
 		[CompilerGenerated]
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]

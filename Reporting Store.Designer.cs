@@ -32,7 +32,6 @@ namespace IMS
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.numMin = new System.Windows.Forms.NumericUpDown();
@@ -100,19 +99,9 @@ namespace IMS
             0,
             0,
             0});
-            this.numMin.Minimum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
             this.numMin.Name = "numMin";
             this.numMin.Size = new System.Drawing.Size(156, 38);
             this.numMin.TabIndex = 18;
-            this.numMin.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
             this.numMin.ValueChanged += new System.EventHandler(this.numMin_ValueChanged);
             // 
             // lb1
@@ -141,7 +130,7 @@ namespace IMS
             this.numMax.Size = new System.Drawing.Size(156, 38);
             this.numMax.TabIndex = 16;
             this.numMax.Value = new decimal(new int[] {
-            10000,
+            100,
             0,
             0,
             0});
@@ -274,10 +263,6 @@ namespace IMS
             this.dgvWH1.ReadOnly = true;
             this.dgvWH1.RowHeadersVisible = false;
             this.dgvWH1.RowHeadersWidth = 51;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.LightSeaGreen;
-            this.dgvWH1.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvWH1.RowTemplate.Height = 24;
-            this.dgvWH1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvWH1.Size = new System.Drawing.Size(1609, 632);
             this.dgvWH1.TabIndex = 0;
             // 
@@ -291,6 +276,8 @@ namespace IMS
             // 
             // workRefresh
             // 
+            this.workRefresh.WorkerReportsProgress = true;
+            this.workRefresh.WorkerSupportsCancellation = true;
             this.workRefresh.DoWork += new System.ComponentModel.DoWorkEventHandler(this.workRefresh_DoWork);
             this.workRefresh.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.workRefresh_RunWorkerCompleted);
             // 
@@ -323,6 +310,7 @@ namespace IMS
             this.Controls.Add(this.panel1);
             this.Name = "Reporting_Store";
             this.Text = "Reporting_Store";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Reporting_Store_FormClosing);
             this.Load += new System.EventHandler(this.Reporting_Store_Load);
             this.Shown += new System.EventHandler(this.Reporting_Store_Shown);
             this.panel1.ResumeLayout(false);
@@ -353,6 +341,6 @@ namespace IMS
         private Label lb1;
         private Label label6;
         private NumericUpDown numMin;
-        private System.ComponentModel.BackgroundWorker workRefresh;
+        public System.ComponentModel.BackgroundWorker workRefresh;
     }
 }

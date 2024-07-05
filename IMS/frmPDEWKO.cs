@@ -2818,6 +2818,12 @@ if(dt.Rows.Count > 0)
 					}
 				}
             }
+            if (cbREVNO.Items.Count > 0)
+			{
+				cbREVNO.Enabled = false;
+                cbREVNO.SelectedIndex = 0;
+            }
+              
         }
 
 		private void BindRevNo()
@@ -2828,11 +2834,12 @@ if(dt.Rows.Count > 0)
 			strSQL += "WHERE MAITM_ITMTY = 1 AND MAITM_ACTFG = -1 ";
 			strSQL = strSQL + "AND MABOM_MDLCD = '" + Common.gfValidSQLStr(Conversions.ToString(cbMDLCD.SelectedValue)) + "' ";
 			strSQL += "AND MABOM_ACTFG = 1 ";
-			strSQL += "ORDER BY MABOM_REVNO ";
+			strSQL += "ORDER BY MABOM_REVNO DESC ";
 			cbREVNO.ValueMember = "MABOM_REVNO";
 			cbREVNO.DisplayMember = "MABOM_REVNO";
 			Common.RetriveComboItembySQL(strSQL, cbREVNO);
-		}
+		
+        }
 
 		private void calculateTotal()
 		{

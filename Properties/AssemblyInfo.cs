@@ -13,6 +13,6 @@ using System.Runtime.Versioning;
 [assembly: ComVisible(false)]
 [assembly: Guid("b5dc3f01-6158-4904-ad93-fa8ece1498f4")]
 
-[assembly: AssemblyFileVersion("1.2.7.5")]
-[assembly: AssemblyVersion("1.2.7.5")]
+[assembly: AssemblyFileVersion("1.2.7.6")]
+[assembly: AssemblyVersion("1.2.7.6")]
 

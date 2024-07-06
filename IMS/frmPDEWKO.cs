@@ -7,13 +7,16 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using IMS.My.Resources;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Spire.Barcode;
+using ComboBox = System.Windows.Forms.ComboBox;
 using DataTable = System.Data.DataTable;
+using Panel = System.Windows.Forms.Panel;
 
 namespace IMS
 {
@@ -3122,12 +3125,20 @@ if(dt.Rows.Count > 0)
 
 		private void btnAdd_Click(object sender, EventArgs e)
 		{
-			string strSQL = "EXEC spPDEWKO_PACKING 1, ";
-			strSQL = strSQL + "'" + MyProject.Computer.Name + "', ";
-			strSQL = strSQL + "'" + txtDOCNO.Text + "', ";
-			strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("'", cbPACKING.SelectedValue), "', ")));
-			strSQL += Conversions.ToString(numPacking.Value);
-			DB.ExecProc(strSQL);
+           foreach(DataGridViewRow row in dgvPDWKP.Rows)
+			{
+				string Packing = row.Cells["WRK_PACKING"].Value.ToString();
+				double QTY = Conversions.ToDouble(dgvPDWKP.CurrentRow.Cells["WRK_QTY"].Value);
+				if (Packing.Trim() != "")
+				{
+                    string strSQL = "EXEC spPDEWKO_PACKING 1, ";
+                    strSQL = strSQL + "'" + MyProject.Computer.Name + "', ";
+                    strSQL = strSQL + "'" + txtDOCNO.Text + "', ";
+                    strSQL = Conversions.ToString(Operators.ConcatenateObject(strSQL, Operators.ConcatenateObject(Operators.ConcatenateObject("'", Packing), "', ")));
+                    strSQL += Conversions.ToString(QTY);
+                    DB.ExecProc(strSQL);
+                }
+            }
 			RefreshGridPDWKP();
 		}
 

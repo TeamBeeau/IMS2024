@@ -3185,18 +3185,20 @@ namespace IMS
 				strSQL += "WHERE MAITM_ITMTY = '1' AND MAITM_ACTFG = -1 AND MABOM_ACTFG = 1 ";
 				strSQL = strSQL + "AND MACPT_CUSID = '" + Common.gfValidSQLStr(Conversions.ToString(cbCUSID.SelectedValue)) + "' ";
 				strSQL = strSQL + "AND MACPT_ITMCD = '" + Common.gfValidSQLStr(Conversions.ToString(cbITMCD.SelectedValue)) + "' ";
-				strSQL += "ORDER BY MACPT_REVNO ";
+				strSQL += "ORDER BY MACPT_REVNO DESC ";
 				cbREVNO.ValueMember = "MACPT_REVNO";
 				cbREVNO.DisplayMember = "MACPT_REVNO";
 				Common.RetriveComboItembySQL(strSQL, cbREVNO);
 				lblREVNO.Visible = true;
 				cbREVNO.Visible = true;
+				cbREVNO.Enabled = false;
 			}
 			else
 			{
-				lblREVNO.Visible = false;
-				cbREVNO.Visible = false;
-			}
+				lblREVNO.Visible = true;
+				cbREVNO.Visible = true;
+                cbREVNO.Enabled = false;
+            }
 		}
 
 		private void btnPRINT_Click(object sender, EventArgs e)

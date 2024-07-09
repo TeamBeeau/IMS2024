@@ -26,6 +26,7 @@ using System.Runtime;
 using System.Runtime.InteropServices;
 using OfficeOpenXml;
 using OfficeOpenXml.Style.XmlAccess;
+using System.Globalization;
 
 namespace IMS
 {
@@ -119,6 +120,7 @@ namespace IMS
 
                 foreach (DataRow dr in dt.Rows)
                 {
+                    
                     if (list.FindIndex(a => a.Contains(dr["INTRN_ITMCD"].ToString())) == -1)
                         continue;
                     bal = Convert.ToDouble(dr["INTRN_BALQT"]);
@@ -225,9 +227,14 @@ namespace IMS
                         dtRP.Rows.Add(item, num1, num2, num3, num4, num5, num6, num7, balanceValue);
                     num1 = 0; num2 = 0; num3 = 0; num4 = 0; num5 = 0; num6 = 0; num7 = 0;
                 }
-            }
-        }
 
+            }
+           
+        }
+        private string FormatNumber(double input)
+        {
+            return input.ToString("N0", new CultureInfo("vi-VN"));
+        }
         string strSQL = "";
         private void button1_Click(object sender, EventArgs e)
         {
@@ -248,6 +255,7 @@ namespace IMS
             //         dgvWH1.Rows.Clear();
             if (!workRefresh.IsBusy)
                 workRefresh.RunWorkerAsync();
+            
         }
 
         private void cbHITMTY_SelectedIndexChanged(object sender, EventArgs e)
@@ -373,35 +381,35 @@ namespace IMS
                 dgvWH1.Columns[6].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
                 dgvWH1.Columns[7].DefaultCellStyle.Font = new System.Drawing.Font("Arial", 11);
                 dgvWH1.Columns[8].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[8].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[8].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[7].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[7].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[7].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[6].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[6].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[6].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[5].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[5].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[5].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[4].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[4].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[4].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[3].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[3].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[3].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[2].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[2].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[2].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 dgvWH1.Columns[1].DefaultCellStyle.Format = Common.gfNumberFormat(PublicEnum.ControlTypeEnum.DataGridView, PublicEnum.NumberFormatEnum.Price);
-                dgvWH1.Columns[1].DefaultCellStyle.Format = "0,##.000";
+                dgvWH1.Columns[1].DefaultCellStyle.Format = "N2";
                 dgvWH1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvWH1.Sort(dgvWH1.Columns["Col9"], ListSortDirection.Ascending);//NEWDB
                 dgvWH1.Refresh();
